@@ -6,6 +6,7 @@ import qualified Data.ByteString.Lazy.Char8 as B
 import qualified Data.Map as M
 import ID3
 import System.Console.ParseArgs
+import System.Exit
 
 data Index = IndexFrame | IndexFile 
   deriving (Eq, Ord, Enum, Show)
@@ -59,3 +60,6 @@ main = do
             Just targetFrame -> 
               case frInfo_ targetFrame of
                 Text enc str -> putStrLn $ decode tag enc str
+                _ -> error "unknown frame type"
+            Nothing -> exitFailure
+    Nothing -> exitFailure
