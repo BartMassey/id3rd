@@ -46,6 +46,13 @@ decode tag encoding str =
           in
    B.unpack $ convert encodingName "UTF-8" $ B.pack str
 
+lookupTarget :: ID3Tag -> String -> Maybe String
+lookupTarget tag target =
+    M.lookup target (tagFrames tag) >>= \targetFrame ->
+      case frInfo_ targetFrame of
+        Text enc str -> Just $ decode tag enc str
+        _ -> error "unknown frame type"
+
 main :: IO ()
 main = do
   args <- parseArgsIO ArgsComplete argd
@@ -55,11 +62,7 @@ main = do
       case getArg args IndexFrame of
         Nothing -> putStr $ show tag
         Just target -> 
-          let maybeTargetFrame = M.lookup target $ tagFrames tag in
-          case maybeTargetFrame of
-            Just targetFrame -> 
-              case frInfo_ targetFrame of
-                Text enc str -> putStrLn $ decode tag enc str
-                _ -> error "unknown frame type"
+          case lookupTarget tag target of
+            Just frameData -> putStrLn frameData
             Nothing -> exitFailure
     Nothing -> exitFailure
