@@ -48,10 +48,18 @@ decode tag encoding str =
 
 lookupTarget :: ID3Tag -> String -> Maybe String
 lookupTarget tag target =
-    M.lookup target (tagFrames tag) >>= \targetFrame ->
-      case frInfo_ targetFrame of
-        Text enc str -> Just $ decode tag enc str
-        _ -> error "unknown frame type"
+  case target of
+    "date" ->
+      let lt = lookupTarget tag in
+      case (lt "TYER", lt "TDAT") of
+        (Just [y1,y2,y3,y4], Just [d1,d2,m1,m2]) ->
+          Just [y1,y2,y3,y4,'-',m1,m2,'-',d1,d2]
+        _ -> Nothing
+    _ -> 
+      M.lookup target (tagFrames tag) >>= \targetFrame ->
+        case frInfo_ targetFrame of
+          Text enc str -> Just $ decode tag enc str
+          _ -> error "unknown frame type"
 
 main :: IO ()
 main = do
