@@ -1,8 +1,6 @@
 -- Copyright © 2011 Bart Massey
 -- Dump all the ID3 tag information for a file
 
-import Codec.Text.IConv
-import qualified Data.ByteString.Lazy.Char8 as B
 import qualified Data.Map as M
 import ID3
 import System.Console.ParseArgs
@@ -24,28 +22,6 @@ argd = [
         argData = argDataRequired "tagged-file" ArgtypeString,
         argDesc = "Inspect this file" } ]
         
--- Convert input encoding into UTF-8
-decode :: ID3Tag -> Integer -> String -> String
-decode tag encoding str =
-  let (id3version, _) = tagVersion_ $ tagHeader tag in
-  let encodingName =
-        case encoding of
-          0 -> "LATIN1"
-          1 -> 
-            case id3version of
-              2 -> "UCS-2"
-              3 -> "UCS-2"
-              4 -> "UTF-16"
-              _ -> error "unknown id3 version in encoding"
-          2 -> 
-            case id3version of
-              2 -> "UTF-16BE"
-              _ -> error "unknown id3 version in encoding"
-          3 -> "UTF-8"
-          _ -> error "unknown encoding"
-          in
-   B.unpack $ convert encodingName "UTF-8" $ B.pack str
-
 lookupTarget :: ID3Tag -> String -> Maybe String
 lookupTarget tag target =
   case target of
@@ -58,7 +34,7 @@ lookupTarget tag target =
     _ -> 
       M.lookup target (tagFrames tag) >>= \targetFrame ->
         case frInfo_ targetFrame of
-          Text enc str -> Just $ decode tag enc str
+          Text _ str -> Just str
           _ -> error "unknown frame type"
 
 main :: IO ()
