@@ -40,7 +40,8 @@ lookupTarget tag target =
 main :: IO ()
 main = do
   args <- parseArgsIO ArgsComplete argd
-  maybeTag <- readTag $ getRequiredArg args IndexFile
+  src <- getArgStdio args IndexFile ReadMode
+  maybeTag <- hReadTag src
   case maybeTag of
     Just tag ->
       case getArg args IndexFrame of
