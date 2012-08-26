@@ -1,0 +1,23 @@
+name:                id3rd
+version:             0.1.0.0
+synopsis:            Read ID3 tag information from an MP3 file.
+description:
+        This tool reads ID3 tags from an MP3 file, outputting
+        them in a way that preserves maximal useful information
+        and is formatted for easy use in scripts.
+
+homepage:            http://github.com/BartMassey/id3rd
+license:             MIT
+license-file:        COPYING
+author:              Bart Massey
+maintainer:          bart.massey@gmail.com
+copyright:           Copyright © 2011 Bart Massey
+category:            Tools
+build-type:          Simple
+cabal-version:       >= 1.8
+
+executable id3rd
+  main-is:             id3rd.hs
+  build-depends:       base >= 4 && < 5,
+                       idiii >= 0.1.2.5 && < 0.2,
+                       parseargs >= 0.1.3.2 && < 0.2
