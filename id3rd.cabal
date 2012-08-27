@@ -1,10 +1,13 @@
 name:                id3rd
-version:             0.1.0.0
-synopsis:            Read ID3 tag information from an MP3 file.
+version:             0.1.1.0
+synopsis:            Read ID3 tag frames from an MP3 file.
 description:
-        This tool reads ID3 tags from an MP3 file, outputting
-        them in a way that preserves maximal useful information
-        and is formatted for easy use in scripts.
+        This tool reads ID3 tag frames from an MP3 file,
+        outputting them in a way that preserves maximal
+        useful information and is formatted for easy use in
+        scripts. It supports the subset of tag frames parsed
+        by the `idiii` package. Large blobs generally are
+        not parsed and reported in detail.
 
 homepage:            http://github.com/BartMassey/id3rd
 license:             MIT
