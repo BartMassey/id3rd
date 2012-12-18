@@ -60,28 +60,34 @@ showFrameInfo (COMM {lang = l, descr = d, text = s}) =
 showFrameInfo (APIC {mime = m, picType = t, descr = d, picData = ws}) =
   show (length ws) ++ ": " ++ m ++ ": " ++ picTypeString t ++ ": " ++ d
     where
-      picTypeString t =
-        [ "other",
-          "icon-32x32-PNG",
-          "icon",
-          "front-cover",
-          "back-cover",
-          "leaflet-page",
-          "media",
-          "lead-artist",
-          "artist",
-          "conductor",
-          "band",
-          "composer",
-          "lyricist",
-          "location",
-          "during-recording",
-          "during-performance",
-          "screen-capture",
-          "bright-coloured-fish",
-          "illustration",
-          "band-logotype",
-          "studio-logotype" ] !! fromIntegral t
+      picTypeString t 
+        | fromIntegral t < length picTypeStrings =
+            picTypeStrings !! fromIntegral t
+        | otherwise =
+            "picture type " ++ show t
+        where
+          picTypeStrings =
+            [ "other",
+              "icon-32x32-PNG",
+              "icon",
+              "front-cover",
+              "back-cover",
+              "leaflet-page",
+              "media",
+              "lead-artist",
+              "artist",
+              "conductor",
+              "band",
+              "composer",
+              "lyricist",
+              "location",
+              "during-recording",
+              "during-performance",
+              "screen-capture",
+              "bright-coloured-fish",
+              "illustration",
+              "band-logotype",
+              "studio-logotype" ]
 showFrameInfo (PCNT {counter = c}) =
   show c
 showFrameInfo (POPM {email = e, rating = r, counter = c}) =
